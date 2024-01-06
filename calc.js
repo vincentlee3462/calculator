@@ -149,3 +149,4 @@ function calculate() {
 
 //when type operator, mark number and operator onto "nums" and "oper"
 //num_count and oper_count add one
+//if there does not exist close blanket at the end, add a close blanket automatically when calculating.
