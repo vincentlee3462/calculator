@@ -4,8 +4,8 @@ var nums = ['']; //nums is a array that storing numbers for calculate.
 var oper = [];
 var oper_count = 0; //oper_count is the number that show how many operator are waiting to calculate.
 var num_count = 0; //num_count is the number that show how many numbers are waiting to calculate.
-var open = 0;
-var close = 0;
+var open_blan = 0;
+var close_blan = 0;
 var result, answer;
 function load() {
   operate = document.querySelector("#operate");
@@ -44,9 +44,9 @@ function num_click() {
     operate.innerHTML = "";
   }
   operate.innerHTML += this.id;
-  console.log(nums);
+  console.log("before", nums);
   nums[num_count] += this.id;
-  console.log(nums);
+  console.log("after", nums);
 
 }
 
@@ -62,6 +62,9 @@ function operator_click() {
       //also change operator in the "oper" array
       nums[num_count-1] = this.id;
       console.log(nums);
+    } else if (this.id == "-" && !(nums[num_count-1] > "0" && nums[num_count-1] < "9")) {
+      //num_count -= 1;
+      nums[num_count] += this.id;
     } else {
       //num_count++;
       
@@ -72,6 +75,9 @@ function operator_click() {
       console.log(nums);
     }
     operate.innerHTML += this.id;
+    
+  } else if (this.id == "-") {
+    nums[num_count] += this.id;
   }
 }
 
@@ -97,13 +103,18 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
     }
+    if (nums[num_count-1] > "0" && nums[num_count-1] < "9") {
+      nums[num_count] = "*";
+      num_count++;
+      nums[num_count] = "";
+    }
     nums[num_count] = "(";
     num_count++;
     nums[num_count] = "";
     operate.innerHTML += "(";
-    open++;
+    open_blan++;
   } else if (this.id == "close") {
-    if (close < open) {
+    if (close_blan < open_blan) {
       if (nums[num_count] != "") {
         num_count++;
         nums[num_count] = "";
@@ -112,9 +123,10 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
       operate.innerHTML += ")";
-      close++;
+      close_blan++;
     }
   }
+  console.log(nums);
 }
 
 function action_click() {
