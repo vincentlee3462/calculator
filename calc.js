@@ -42,6 +42,12 @@ function num_click() {
   if (operate.innerHTML == "None") {
     operate.style.visibility = "visible";
     operate.innerHTML = "";
+  } else if (nums[num_count-1] == ")") {
+    nums[num_count] = "*";
+    num_count++;
+    nums[num_count] = ""
+
+    operate.innerHTML += "*"
   }
   operate.innerHTML += this.id;
   console.log("before", nums);
