@@ -4,8 +4,8 @@ var nums = ['']; //nums is a array that storing numbers for calculate.
 var oper = [];
 var oper_count = 0; //oper_count is the number that show how many operator are waiting to calculate.
 var num_count = 0; //num_count is the number that show how many numbers are waiting to calculate.
-var open_blan = 0;
-var close_blan = 0;
+var open_blan = [];
+var close_blan = [];
 var result, answer;
 function load() {
   operate = document.querySelector("#operate");
@@ -109,21 +109,22 @@ function symbol_click() {
       nums[num_count] = "";
     }
     nums[num_count] = "(";
+    open_blan.push(num_count);
     num_count++;
     nums[num_count] = "";
     operate.innerHTML += "(";
-    open_blan++;
   } else if (this.id == "close") {
-    if (close_blan < open_blan) {
+    if (close_blan.length < open_blan.length) {
       if (nums[num_count] != "") {
         num_count++;
         nums[num_count] = "";
       }
       nums[num_count] = ")";
+      close_blan.push(num_count);
       num_count++;
       nums[num_count] = "";
       operate.innerHTML += ")";
-      close_blan++;
+      
     }
   }
   console.log(nums);
