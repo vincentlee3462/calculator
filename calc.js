@@ -213,7 +213,6 @@ function action_click() {
       //calculate
       result.innerHTML = calculate(nums);
       answer = result.innerHTML;
-
     }
   }
 }
@@ -341,7 +340,7 @@ function bracket(content) {
     //return content_final;
   } 
   if ((content.includes("+") || content.includes("-") || content.includes("*") || content.includes("/")) && (content.includes("(") == false)) {
-    console.log("call calculate");  
+    console.log("call calculate");
     return calculate(content);
   } else {
     console.log("only number return number");
