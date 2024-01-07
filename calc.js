@@ -42,12 +42,16 @@ function num_click() {
   if (operate.innerHTML == "None") {
     operate.style.visibility = "visible";
     operate.innerHTML = "";
-  } else if (nums[num_count-1] == ")") {
+  } else if (nums[num_count-1] == ")" && nums[num_count] != "-") {
     nums[num_count] = "*";
     num_count++;
     nums[num_count] = ""
 
     operate.innerHTML += "*"
+  } else if (nums[num_count-1] == ")" && nums[num_count] == "-") {
+    num_count++;
+    nums[num_count] = "";
+
   }
   operate.innerHTML += this.id;
   console.log("before", nums);
@@ -207,10 +211,13 @@ function action_click() {
     //var nums_final;
     if (nums.includes("(") == true) {
       //have bracket
+      console.log(bracket(nums));
       result.innerHTML = bracket(nums);
+
       answer = result.innerHTML;
     } else {
       //calculate
+      console.log(calculate(nums));
       result.innerHTML = calculate(nums);
       answer = result.innerHTML;
     }
@@ -279,8 +286,10 @@ function calculate(content) {
             break;
           }
         }
-      }
+      } 
     }
+    //console.log(content);
+    return content[0];
   }
   //return content;
 }
