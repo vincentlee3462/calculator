@@ -126,7 +126,7 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
     }
-    if (nums[num_count-1] >= "0" && nums[num_count-1] <= "9") {
+    if (isNaN(nums[num_count]) == false) {
       nums[num_count] = "*";
       num_count++;
       nums[num_count] = "";
@@ -221,6 +221,13 @@ function action_click() {
       result.innerHTML = calculate(nums);
       answer = result.innerHTML;
     }
+  } else if (this.id == "answer") {
+    if (operate.innerHTML == "None") {
+      operate.innerHTML = "";
+      operate.style.visibility = "visible";
+    }
+    operate.innerHTML += answer;
+    nums[num_count] = answer;
   }
 }
 
@@ -240,6 +247,8 @@ function calculate(content) {
       value = content[2] + content[0];
     } else if (content[1] == "-") {
       value = content[0] - content[2];
+    } else if (content.length == 1) {
+      value = content[0];
     }
     console.log(value);
     return value;
