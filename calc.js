@@ -126,7 +126,7 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
     }
-    if (isNaN(nums[num_count]) == false) {
+    if (isNaN(Number(nums[num_count])) == false) {
       nums[num_count] = "*";
       num_count++;
       nums[num_count] = "";
@@ -212,13 +212,13 @@ function action_click() {
     if (nums.includes("(") == true) {
       //have bracket
       console.log(bracket(nums));
-      result.innerHTML = bracket(nums);
+      result.innerHTML = Number(bracket(nums).toFixed(12));
 
       answer = result.innerHTML;
     } else {
       //calculate
       console.log(calculate(nums));
-      result.innerHTML = calculate(nums);
+      result.innerHTML = Number(calculate(nums).toFixed(12));
       answer = result.innerHTML;
     }
   } else if (this.id == "answer") {
