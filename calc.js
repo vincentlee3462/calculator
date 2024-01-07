@@ -5,6 +5,7 @@ var num_count = 0; //num_count is the number that show how many numbers are wait
 var open_blan = [];
 var close_blan = [];
 var result, answer;
+var needClear = false;
 function load() {
   operate = document.querySelector("#operate");
   result = document.querySelector("#result");
@@ -40,7 +41,7 @@ function num_click() {
   if (operate.innerHTML == "None") {
     operate.style.visibility = "visible";
     operate.innerHTML = "";
-  } else if (nums[num_count-1] == ")" && nums[num_count] != "-") {
+  } else if (nums[num_count-1] == ")" && nums[num_count] != "-" && nums[num_count] != "*") {
     nums[num_count] = "*";
     num_count++;
     nums[num_count] = ""
@@ -49,9 +50,17 @@ function num_click() {
   } else if (nums[num_count-1] == ")" && nums[num_count] == "-") {
     num_count++;
     nums[num_count] = "";
+  } else if (needClear == true) {
+    operate.innerHTML = "";
+    nums = [''];
+    num_count = 0;
+    open_blan = [];
+    close_blan = [];
+    needClear = false;
   }
   operate.innerHTML += this.id;
   nums[num_count] += this.id;
+  console.log(num_count);
 }
 
 function operator_click() {
@@ -67,14 +76,27 @@ function operator_click() {
       nums[num_count-1] = this.id;
     } else if (this.id == "-" && !(nums[num_count-1] >= "0" && nums[num_count-1] <= "9")) {
       if (nums[num_count] == "") {
+        console.log("this");
         nums[num_count] += this.id;
+        //operate.innerHTML += this.id;
       } else {
+        console.log("else");
+        //operate.innerHTML += this.id;
         nums.push(this.id);
         nums.push("");
         num_count += 2;
       }
     } else if (nums[num_count] == "") {
       nums[num_count] = this.id;
+      num_count++;
+      nums[num_count] = '';
+    } else if (needClear == true) {
+      needClear = false;
+      operate.innerHTML = "";
+      nums = [''];
+      num_count = 0;
+      open_blan = [];
+      close_blan = [];  
     } else {
       num_count++;
       nums[num_count] = this.id;
@@ -85,6 +107,9 @@ function operator_click() {
     
   } else if (this.id == "-") {
     nums[num_count] += this.id;
+    operate.style.visibility = "visible";
+    operate.innerHTML = "";
+    operate.innerHTML += this.id;
   }
 }
 
@@ -92,6 +117,13 @@ function symbol_click() {
   if (operate.innerHTML == "None") {
     operate.style.visibility = "visible";
     operate.innerHTML = ""
+  } else if (needClear == true) {
+    operate.innerHTML = "";
+    nums = [''];
+    num_count = 0;
+    open_blan = [];
+    close_blan = [];
+    needClear = false;
   }
 
   if (this.id == "dot") {
@@ -109,11 +141,11 @@ function symbol_click() {
     if (nums[num_count] != "") {
       num_count++;
       nums[num_count] = "";
-    }
-    if (nums[num_count-1][0] >= "0" && nums[num_count-1][0] <= "9") {
-      nums[num_count] = "*";
-      num_count++;
-      nums[num_count] = "";
+      if ((nums[num_count-1][0] >= "0" && nums[num_count-1][0] <= "9")) {
+        nums[num_count] = "*";
+        num_count++;
+        nums[num_count] = "";
+      }
     }
 
     nums[num_count] = "(";
@@ -137,6 +169,14 @@ function symbol_click() {
 }
 
 function action_click() {
+  if (needClear == true) {
+    needClear = false;
+    operate.innerHTML = "";
+    nums = [''];
+    num_count = 0;
+    open_blan = [];
+    close_blan = [];
+  }
   if (this.id == "clear") {
     nums = [''];
     num_count = 0;
@@ -148,7 +188,7 @@ function action_click() {
     answer = result.innerHTML;
     result.innerHTML = "0";
   } else if (this.id == "result") {
-    
+    needClear = true;
     if (nums.at(-1) == "") {
       nums.pop();
     }
@@ -181,7 +221,6 @@ function action_click() {
     if (nums.includes("(") == true) {
       //have bracket
       result.innerHTML = Number(bracket(nums).toFixed(12));
-
       answer = result.innerHTML;
     } else {
       //calculate
