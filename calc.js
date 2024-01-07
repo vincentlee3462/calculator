@@ -49,13 +49,9 @@ function num_click() {
   } else if (nums[num_count-1] == ")" && nums[num_count] == "-") {
     num_count++;
     nums[num_count] = "";
-
   }
   operate.innerHTML += this.id;
-  //console.log("before", nums);
   nums[num_count] += this.id;
-  //console.log("after", nums);
-  //console.log(num_count);
 }
 
 function operator_click() {
@@ -63,17 +59,13 @@ function operator_click() {
 
   if (operate.innerHTML != "None") {
     if (last == "+" || last == "-" || last == "*" || last == "/") {
-      //console.log("if");
       //if already have operator, then remove the exist one, and add the new one
       //"3+" => "3-"
       operate.innerHTML = operate.innerHTML.slice(0, -1);
   
       //also change operator in the "nums" array
       nums[num_count-1] = this.id;
-      //console.log(nums);
     } else if (this.id == "-" && !(nums[num_count-1] >= "0" && nums[num_count-1] <= "9")) {
-      //num_count -= 1;
-      //console.log("else if");
       if (nums[num_count] == "") {
         nums[num_count] += this.id;
       } else {
@@ -83,23 +75,17 @@ function operator_click() {
       }
     } else if (nums[num_count] == "") {
       nums[num_count] = this.id;
-      //console.log(num_count);
     } else {
-      //num_count++;
-      //console.log("else");
       num_count++;
       nums[num_count] = this.id;
       num_count++;
       nums[num_count] = '';
-      //console.log(nums);
     }
     operate.innerHTML += this.id;
     
   } else if (this.id == "-") {
     nums[num_count] += this.id;
   }
-  //console.log(num_count);
-  //console.log(nums);
 }
 
 function symbol_click() {
@@ -124,18 +110,17 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
     }
-    if (nums[num_count][0] >= "0" && nums[num_count][0] <= "9") {
+    if (nums[num_count-1][0] >= "0" && nums[num_count-1][0] <= "9") {
       nums[num_count] = "*";
       num_count++;
       nums[num_count] = "";
     }
-    //console.log(nums);
+
     nums[num_count] = "(";
     open_blan.push(num_count);
     num_count++;
     nums[num_count] = "";
     operate.innerHTML += "(";
-    //console.log("open bracket", open_blan);
   } else if (this.id == "close") {
     if (close_blan.length < open_blan.length) {
       if (nums[num_count] != "") {
@@ -147,20 +132,14 @@ function symbol_click() {
       num_count++;
       nums[num_count] = "";
       operate.innerHTML += ")";
-      //console.log("close bracket", close_blan);
     }
   }
-  //console.log(nums);
-  //console.log(num_count);
-
 }
 
 function action_click() {
   if (this.id == "clear") {
     nums = [''];
-    //oper = [];
     num_count = 0;
-    //oper_count = 0;
     open_blan = [];
     close_blan = [];
 
@@ -183,14 +162,9 @@ function action_click() {
       nums.pop();
     }
 
-    //console.log(nums);
-    //console.log(open_blan);
     if (close_blan.length < open_blan.length) {
-      //console.log("open bracket", open_blan);
-      //console.log("close bracket", close_blan);
       add_close = open_blan.length - close_blan.length;
       for (var i=0; i<add_close; i++) {
-        //console.log(i);
         nums.push(")");
         num_count = nums.length-1;
         close_blan.push(num_count);
@@ -204,18 +178,13 @@ function action_click() {
       }
     }
     
-    //console.log("open bracket", open_blan);
-    //console.log("close bracket", close_blan);
-    //var nums_final;
     if (nums.includes("(") == true) {
       //have bracket
-      //console.log(bracket(nums));
       result.innerHTML = Number(bracket(nums).toFixed(12));
 
       answer = result.innerHTML;
     } else {
       //calculate
-      //console.log(calculate(nums));
       result.innerHTML = Number(calculate(nums).toFixed(12));
       answer = result.innerHTML;
     }
@@ -232,10 +201,8 @@ function action_click() {
 function calculate(content) {
   var value = 0;
   var content_final, content_front, content_end;
-  //console.log("calculate content", content);
   if (content.length < 4) {
     //only one operation, simply calculation.
-    //console.log("one operation, one calculate");
     
     if (content[1] == "*") {
       value = content[2] * content[0];
@@ -248,26 +215,18 @@ function calculate(content) {
     } else if (content.length == 1) {
       value = content[0];
     }
-    //console.log(value);
     return value;
   } else {
     //more than one operation, complicated calculation.
     //do multiply and division first, then do add and minus later.
-    //console.log("multiple operation, complicated calculate");
-    while (content.length != 1) {
-      //console.log(content.length);
-      
+    while (content.length != 1) {      
       if (content.includes("*") || content.includes("/")) {
       //still exist multiply and division.
         for (var i=0; i<content.length; i++) {
           if (content[i] == "*" || content[i] == "/") {
             content_front = content.slice(0, i-1);
             content_end = content.slice(i+2);
-            
-            
-              //console.log("front", content_front);
-            //console.log("end", content_end);
-            
+                        
             value = calculate(content.slice(i-1, i+2));
             content_final = content_front.concat(value);
             content_final = content_final.concat(content_end);
@@ -281,11 +240,7 @@ function calculate(content) {
           if (content[i] == "+" || content[i] == "-") {
             content_front = content.slice(0, i-1);
             content_end = content.slice(i+2);
-            
-            
-            //console.log("front", content_front);
-            //console.log("end", content_end);
-            
+                        
             value = calculate(content.slice(i-1, i+2));
             content_final = content_front.concat(value);
             content_final = content_final.concat(content_end);
@@ -295,19 +250,12 @@ function calculate(content) {
         }
       } 
     }
-    //console.log(content);
     return content[0];
   }
-  //return content;
 }
-
-
-
-
 
 function bracket(content) {
   //determine whether a pair of bracket
-  //console.log("======content", content, "======");
   if (content.includes("(") == true) {
     while (content.includes("(") == true) {
       var start = 0;
@@ -329,31 +277,23 @@ function bracket(content) {
         
         if (brack_count == 0 && content[i] == ")") {
           todelete = content.slice(start+1, i);
-          //console.log("todelete", todelete);
 
           content_front = content.slice(0, start);
           content_end = content.slice(i+1);
-          
-          //console.log("front", content_front);
-          //console.log("end", content_end);
-          
+                    
           value = bracket(todelete);
           content_final = content_front.concat(value);
           content_final = content_final.concat(content_end);
-          //console.log("content_final", content_final);
+          
           content = content_final;
-          //console.log("include bracket?", content.includes("("));
           break;
         }
       }
     } 
   } 
   if ((content.includes("+") || content.includes("-") || content.includes("*") || content.includes("/")) && (content.includes("(") == false)) {
-    //console.log("call calculate");
     return calculate(content);
   } else {
-    //console.log("only number return number");
-    //console.log(content);
     return content;
   }
 }
